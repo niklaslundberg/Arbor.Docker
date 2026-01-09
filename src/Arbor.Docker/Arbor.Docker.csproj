@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+    <TargetFrameworks>net10.0</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/niklaslundberg/Arbor.Docker</PackageProjectUrl>
@@ -11,10 +11,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Arbor.Processing" Version="0.6.0" />
-    <PackageReference Include="Serilog" Version="4.1.0" />
-    <PackageReference Include="JetBrains.Annotations" Version="2024.3.0" />
-    <PackageReference Include="System.Collections.Immutable" Version="9.0.0" />
+    <PackageReference Include="Arbor.Processing" Version="1.0.0-build.1767869796" />
+    <PackageReference Include="Serilog" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+    <_Parameter1>Arbor.Docker.WebApi</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Arbor.Hosting\Arbor.Hosting.csproj" />
   </ItemGroup>
 
 </Project>

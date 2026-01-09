@@ -3,48 +3,47 @@ using System.Threading.Tasks;
 using Serilog;
 using Xunit;
 
-namespace Arbor.Docker.Xunit
+namespace Arbor.Docker.Xunit;
+
+[Collection(nameof(DockerTest))]
+public abstract class DockerTest : IAsyncLifetime
 {
-    [Collection(nameof(DockerTest))]
-    public abstract class DockerTest : IAsyncLifetime
+    private readonly ILogger _logger;
+
+    /// <summary>
+    /// Will dispose the provided logger on this async disposal
+    /// </summary>
+    /// <param name="logger"></param>
+    protected DockerTest(ILogger logger) => _logger = logger;
+
+    public DockerContext? Context { get; private set; }
+
+    public virtual async ValueTask DisposeAsync()
     {
-        private readonly ILogger _logger;
-
-        /// <summary>
-        /// Will dispose the provided logger on this async disposal
-        /// </summary>
-        /// <param name="logger"></param>
-        protected DockerTest(ILogger logger) => _logger = logger;
-
-        public DockerContext? Context { get; private set; }
-
-        public virtual async Task DisposeAsync()
+        if (Context is { })
         {
-            if (Context is { })
-            {
-                await Context.SafeDisposeAsync().ConfigureAwait(false);
-            }
-
-            await _logger.SafeDisposeAsync().ConfigureAwait(false);
+            await Context.SafeDisposeAsync();
         }
 
-        public virtual async Task InitializeAsync()
+        await _logger.SafeDisposeAsync();
+    }
+
+    public virtual async ValueTask InitializeAsync()
+    {
+        var containers = new List<ContainerSettings>();
+
+        await foreach (var container in AddContainersAsync())
         {
-            var containers = new List<ContainerArgs>();
-
-            await foreach (var container in AddContainersAsync())
-            {
-                containers.Add(container);
-            }
-
-            Context = await DockerContext.CreateContextAsync(containers, _logger).ConfigureAwait(false);
-
-            await Context.ContainerTask.ConfigureAwait(false);
+            containers.Add(container);
         }
 
-        protected virtual async IAsyncEnumerable<ContainerArgs> AddContainersAsync()
-        {
-            yield break;
-        }
+        Context = await DockerContext.CreateContextAsync(containers, _logger);
+
+        await Context.ContainerTask;
+    }
+
+    protected virtual async IAsyncEnumerable<ContainerSettings> AddContainersAsync()
+    {
+        yield break;
     }
 }

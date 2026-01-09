@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "dependencies": {
+    "net10.0": {
+      "Arbor.Processing": {
+        "type": "Transitive",
+        "resolved": "1.0.0-build.1767869796",
+        "contentHash": "gIBI2SqG9OI7qh36arb4JjeVTb1GlgeqvlS39myihyG/TNL/pjm2se7vqaUHIDjags1fMzQ10CayUk3H9jD0yw=="
+      },
+      "Serilog": {
+        "type": "Transitive",
+        "resolved": "4.3.0",
+        "contentHash": "+cDryFR0GRhsGOnZSKwaDzRRl4MupvJ42FhCE4zhQRVanX0Jpg6WuCBk59OVhVDPmab1bB+nRykAnykYELA9qQ=="
+      },
+      "arbor.docker": {
+        "type": "Project",
+        "dependencies": {
+          "Arbor.Hosting": "[1.0.0, )",
+          "Arbor.Processing": "[1.0.0-build.1767869796, )",
+          "Serilog": "[4.3.0, )"
+        }
+      },
+      "arbor.hosting": {
+        "type": "Project"
+      }
+    }
+  }
+}
