@@ -12,10 +12,7 @@ public sealed class PortHelper
 {
     private readonly ILogger _logger;
 
-    public PortHelper(ILogger? logger = null)
-    {
-        _logger = logger ?? Logger.None;
-    }
+    public PortHelper(ILogger? logger = null) => _logger = logger ?? Logger.None;
 
     internal void Return(PortUsage portUsage) =>
         _ = _usedPorts.TryRemove(portUsage.Port, out _);

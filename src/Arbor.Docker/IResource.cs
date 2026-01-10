@@ -6,5 +6,5 @@ namespace Arbor.Docker;
 
 public interface IResource : IAsyncDisposable
 {
-    Task StartAsync(CancellationToken cancellationToken);
+    public Task StartAsync(CancellationToken cancellationToken);
 }

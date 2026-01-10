@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Arbor.Docker.WebApi;
 
 namespace Arbor.Docker;
 
-internal class ContainerResourceNode : ResourceNode
+internal class ContainerResourceNode(string name, DistributedApplicationBuilder builder) : ResourceNode(name, builder)
 {
-    private readonly DistributedApplicationBuilder _builder;
-
-    public ContainerResourceNode(string name, DistributedApplicationBuilder builder)
-        : base(name, builder) => _builder = builder;
+    private readonly DistributedApplicationBuilder _builder = builder;
 
     public List<IContainerPortMapping> PortMappings { get; } = [];
 

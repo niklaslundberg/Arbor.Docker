@@ -9,21 +9,20 @@ namespace Arbor.Docker;
 
 internal class ResourceNode : IResourceReference
 {
-    private readonly DistributedApplicationBuilder _builder;
-
     public ResourceNode(string name, DistributedApplicationBuilder builder)
     {
-        _builder = builder;
-        Events = new ResourceEvents(_builder.CancellationTokenSource);
+        Events = new ResourceEvents(builder.CancellationTokenSource);
 
         _ = Events.Subscribe((@event, _) => builder.ResourceEvents.Publish(@event));
 
-        _ = Events.Subscribe(async (@event, _) =>
+        _ = Events.Subscribe((@event, _) =>
         {
             if (@event is EndPointAllocated endPointAllocated)
             {
                 ResourceEndPoints.Add(endPointAllocated.EndPoint);
             }
+
+            return Task.CompletedTask;
         });
 
         Name = name;
@@ -42,7 +41,6 @@ internal class ResourceNode : IResourceReference
     public ImmutableArray<IResourceEndPoint> EndPoints => [.. ResourceEndPoints];
 
     internal ConcurrentBag<IResourceEndPoint> ResourceEndPoints { get; } = [];
-
 
     public ResourceEvents Events { get; }
 
@@ -68,14 +66,12 @@ internal class ResourceNode : IResourceReference
 
     public virtual async Task StartAsync(CancellationToken cancellationToken)
     {
-        await Events.Publish(new ResourceStarting(this));
+        await Events.Publish(new ResourceStarting(this), cancellationToken: cancellationToken);
 
         await Resource.StartAsync(cancellationToken);
 
-        await Events.Publish(new ResourceStarted(this));
+        await Events.Publish(new ResourceStarted(this), cancellationToken: cancellationToken);
     }
 
-    public virtual async Task InitializeAsync()
-    {
-    }
+    public virtual Task InitializeAsync() => Task.CompletedTask;
 }

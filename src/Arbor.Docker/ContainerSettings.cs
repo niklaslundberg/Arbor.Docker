@@ -40,8 +40,6 @@ public record ContainerSettings
         EntryPoint = entryPoint?.ToImmutableArray() ?? [];
     }
 
-    public IResourceHealthCheck? HealthCheck { get; init; }
-
     public ImmutableArray<string> EntryPoint { get; }
 
     public ImmutableArray<string> Args { get; }

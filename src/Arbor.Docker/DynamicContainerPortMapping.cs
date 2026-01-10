@@ -1,12 +1,8 @@
 ﻿namespace Arbor.Docker;
 
-public sealed class DynamicContainerPortMapping : IContainerPortMapping
+public sealed class DynamicContainerPortMapping(int containerPort) : IContainerPortMapping
 {
-    public int ContainerPort { get; }
-    public int? HostPort => null;
+    public int ContainerPort { get; } = containerPort;
 
-    public DynamicContainerPortMapping(int containerPort)
-    {
-        ContainerPort = containerPort;
-    }
+    public int? HostPort => null;
 }

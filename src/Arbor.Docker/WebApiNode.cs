@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Arbor.Docker.WebApi;
 using Microsoft.AspNetCore.Hosting;
 
 namespace Arbor.Docker;
 
-internal class WebApiNode : ResourceNode
+internal class WebApiNode(string name, DistributedApplicationBuilder builder, PortHelper portHelper)
+    : ResourceNode(name, builder)
 {
-    private readonly PortHelper _portHelper;
-
-    public WebApiNode(string name, DistributedApplicationBuilder builder, PortHelper portHelper) : base(name, builder) => _portHelper = portHelper;
-
     internal bool UseDynamicEndPointAllocation { get; set; } = true;
 
     internal int DefaultStartPort = 15000;
@@ -21,7 +17,7 @@ internal class WebApiNode : ResourceNode
         string? listenUrl = null;
         if (UseDynamicEndPointAllocation)
         {
-            PortUsage availablePort = _portHelper.GetAvailablePort(DefaultStartPort);
+            PortUsage availablePort = portHelper.GetAvailablePort(DefaultStartPort);
 
             var resourceEndPoint = new HttpEndPoint(availablePort);
 

@@ -1,5 +1,3 @@
 ﻿namespace Arbor.Docker;
 
-public interface IApplicationEvent
-{
-}
+public interface IApplicationEvent;

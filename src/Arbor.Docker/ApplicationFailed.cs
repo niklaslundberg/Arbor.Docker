@@ -6,8 +6,5 @@ public sealed class ApplicationFailed : IApplicationEvent
 {
     public Exception Exception { get; }
 
-    internal ApplicationFailed(Exception ex)
-    {
-        Exception = ex;
-    }
+    internal ApplicationFailed(Exception ex) => Exception = ex;
 }

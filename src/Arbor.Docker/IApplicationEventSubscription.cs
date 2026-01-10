@@ -2,6 +2,4 @@
 
 namespace Arbor.Docker;
 
-public interface IApplicationEventSubscription : IDisposable
-{
-}
+public interface IApplicationEventSubscription : IDisposable;

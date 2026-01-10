@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Immutable;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Channels;
 
 namespace Arbor.Docker;
 
 public class ContainerInfo
 {
-    public ContainerInfo(string name,
+    public ContainerInfo(
+        string name,
         string imageName,
         ImmutableDictionary<string, string> environmentVariables,
         ImmutableArray<PortMapping> ports)

@@ -50,7 +50,7 @@ public sealed class DockerContext : IAsyncDisposable
 
         _isDisposing = true;
 
-        if (CancellationTokenSource?.IsCancellationRequested == false)
+        if (CancellationTokenSource.IsCancellationRequested == false)
         {
             CancellationTokenSource.Cancel(false);
         }

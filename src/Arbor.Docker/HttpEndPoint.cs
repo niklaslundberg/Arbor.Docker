@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Arbor.Docker.WebApi;
+namespace Arbor.Docker;
 
 public sealed class HttpEndPoint(PortUsage portUsage) : IResourceEndPoint, IDisposable
 {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Arbor.Docker;
+﻿namespace Arbor.Docker;
 
 public class ContainerResourceBuilder
 {

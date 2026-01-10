@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Arbor.Docker.WebApi;
 using Arbor.Processing;
 using Serilog;
 
@@ -24,6 +23,7 @@ public class DistributedApplication : IAsyncDisposable
     internal Dictionary<string, ResourceNode> Resources { get; }
 
     public ApplicationEvents Events { get; }
+
     public ResourceEvents ResourceEvents { get; }
 
     internal async Task Initialize()
@@ -162,7 +162,7 @@ public class DistributedApplication : IAsyncDisposable
                     if (health is HealthCheckStatus.Healthy)
                     {
                         resource.Health = health;
-                        _ = Task.Run(() => ResourceEvents.Publish(new ResourceHealthy(resource)), linkedToken.Token);
+                        await ResourceEvents.Publish(new ResourceHealthy(resource), PublishMode.FireAndForgetParallel, linkedToken.Token);
                         break;
                     }
                 }

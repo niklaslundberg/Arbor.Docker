@@ -2,20 +2,13 @@
 using System.Threading.Tasks;
 using Arbor.Hosting;
 
-namespace Arbor.Docker.WebApi;
+namespace Arbor.Docker;
 
-public class WebApiResource: IResource
+public class WebApiResource(CustomApplicationBuilder customApplicationBuilder) : IResource
 {
-    internal CustomApplicationBuilder ApplicationBuilder { get; }
+    internal CustomApplicationBuilder ApplicationBuilder { get; } = customApplicationBuilder;
 
-    public WebApiResource(CustomApplicationBuilder customApplicationBuilder)
-    {
-        ApplicationBuilder = customApplicationBuilder;
-    }
-    public async ValueTask DisposeAsync()
-    {
-        await ApplicationBuilder.DisposeAsync();
-    }
+    public async ValueTask DisposeAsync() => await ApplicationBuilder.DisposeAsync();
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {

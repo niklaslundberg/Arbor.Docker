@@ -17,5 +17,6 @@ public class ContainerEndPoint: IResourceEndPoint
     }
 
     public override string ToString() => PortMapping.ToString();
+
     public int HostPort => PortMapping.HostPorts.Start;
 }

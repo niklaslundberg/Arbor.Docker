@@ -1,12 +1,9 @@
 ﻿namespace Arbor.Docker;
 
-public class ResourceHealthy : IResourceEvent
+public sealed class ResourceHealthy : IResourceEvent
 {
     public IResourceReference Resource { get; }
 
-    public ResourceHealthy(IResourceReference resource)
-    {
-        Resource = resource;
-    }
+    internal ResourceHealthy(IResourceReference resource) => Resource = resource;
     public override string ToString() => $"{nameof(ResourceHealthy)} '{Resource.Name}'";
 }

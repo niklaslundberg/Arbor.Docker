@@ -4,13 +4,7 @@ public sealed class ResourceEventSubscription : IResourceEventSubscription
 {
     private readonly ResourceEvents _resourceEvents;
 
-    internal ResourceEventSubscription(ResourceEvents resourceEvents)
-    {
-        _resourceEvents = resourceEvents;
-    }
+    internal ResourceEventSubscription(ResourceEvents resourceEvents) => _resourceEvents = resourceEvents;
 
-    public void Dispose()
-    {
-        _resourceEvents.TryRemove(this);
-    }
+    public void Dispose() => _resourceEvents.TryRemove(this);
 }

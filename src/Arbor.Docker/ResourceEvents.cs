@@ -12,8 +12,35 @@ public sealed class ResourceEvents
     private readonly CancellationTokenSource _cancellationTokenSource;
     private readonly ConcurrentDictionary<ResourceEventSubscription, Func<IResourceEvent, CancellationToken, Task>> _subscriptions = [];
 
-    internal async Task Publish(IResourceEvent @event)
+    internal async Task Publish(IResourceEvent @event, PublishMode publishMode = PublishMode.AwaitedSequential, CancellationToken cancellationToken = default)
     {
+        if (publishMode == PublishMode.FireAndForgetParallel)
+        {
+            _ = Task.Run(() => Parallel.ForEachAsync(_subscriptions, cancellationToken, async (subscription, token) => await subscription.Value.Invoke(@event, token)), cancellationToken);
+
+            return;
+        }
+
+        if (publishMode == PublishMode.FireAndForgetSequential)
+        {
+            _ = Task.Run(async () =>
+            {
+                foreach (var (_, func) in _subscriptions)
+                {
+                    await func.Invoke(@event, _cancellationTokenSource.Token);
+                }
+            }, cancellationToken);
+
+            return;
+        }
+
+        if (publishMode == PublishMode.AwaitedParallel)
+        {
+            await Parallel.ForEachAsync(_subscriptions, cancellationToken, async (subscription, token) => await subscription.Value.Invoke(@event, token));
+
+            return;
+        }
+
         foreach (var (_, func) in _subscriptions)
         {
             await func.Invoke(@event, _cancellationTokenSource.Token);

@@ -2,10 +2,8 @@
 
 public class ContainerEndPointAllocated : EndPointAllocated
 {
-    public ContainerEndPointAllocated(IResourceReference resource, ContainerEndPoint containerEndPoint) : base(resource,
-        containerEndPoint)
-
+    internal ContainerEndPointAllocated(IResourceReference resource, ContainerEndPoint containerEndPoint)
+        : base(resource, containerEndPoint)
     {
-
     }
 }
